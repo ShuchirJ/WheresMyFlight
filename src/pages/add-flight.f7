@@ -128,13 +128,15 @@
         now.setSeconds(0)
         now.setMilliseconds(0)
         let diffDays = Math.abs(selectedDate - now) / 86400000;
-        if (diffDays > 2) {
+        let dateObj = selectedDate;
+        if (diffDays > 3) {
           yr = String(now.getFullYear());
           month = String(now.getMonth() + 1);
           day = String(now.getDate()+1);
+          dateObj = now;
         }
         let options = { month: "short" };
-        let shortM = new Intl.DateTimeFormat("en-US", options).format(now);
+        let shortM = new Intl.DateTimeFormat("en-US", options).format(dateObj);
 
         let adjustedDay = day;
         if (day.length == 1) adjustedDay = "0" + day;
@@ -145,6 +147,7 @@
         })
         .then(resp => {
           let data = resp.data.data;
+          console.log(`${adjustedDay}-${shortM}`)
           for (let i=0; i<data.length; i++) {
             if (data[i].date1 == `${adjustedDay}-${shortM}`) {
               let fopt = data[i].flights;
